@@ -40,7 +40,7 @@ export const sanitizeForTTS = (word: string): string => {
     "ɣ": "gh",
     "ʔ": "", // coup de glotte ignoré en tts
     "'": "-", // apostrophe générique → micro-pause pour garder la liaison
-    "'": "-", // autre forme d'apostrophe
+    "’": "-", // autre forme d'apostrophe
   };
 
   // Trier par longueur décroissante pour s'assurer que "ngw" est remplacé avant "ng"
