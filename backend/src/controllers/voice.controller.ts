@@ -1,12 +1,17 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../utils/asyncHandler';
-import { sendSuccess } from '../utils/ApiResponse';
+import { sendSuccess, sendError } from '../utils/ApiResponse';
 import fs from 'fs';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization — ne plante pas si la clé est absente
+let openai: OpenAI | null = null;
+const getOpenAI = (): OpenAI | null => {
+  if (!openai && process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openai;
+};
 
 // Simple Levenshtein distance for string similarity
 const getSimilarityScore = (str1: string, str2: string): number => {
@@ -60,8 +65,13 @@ export const scoreVoice = asyncHandler(async (req: Request, res: Response) => {
   }
 
   try {
+    const client = getOpenAI();
+    if (!client) {
+      return sendError(res, 'Service vocal non configuré (clé OpenAI manquante)', 503, 'SERVICE_UNAVAILABLE');
+    }
+
     // Transcription with OpenAI Whisper
-    const transcription = await openai.audio.transcriptions.create({
+    const transcription = await client.audio.transcriptions.create({
       file: fs.createReadStream(req.file.path),
       model: 'whisper-1',
     });
