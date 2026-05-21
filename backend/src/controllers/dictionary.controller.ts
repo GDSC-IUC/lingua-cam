@@ -14,7 +14,7 @@ export const searchDictionary = asyncHandler(async (req: Request, res: Response)
   if (lang) {
     // Trouver languageId via le code
     const Language = (await import('../models/Language.model')).default;
-    const language = await Language.findOne({ code: lang });
+    const language = await Language.findOne({ code: lang as string });
     if (language) filter.languageId = language._id;
   }
 

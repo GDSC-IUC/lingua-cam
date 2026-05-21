@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../utils/asyncHandler';
-import ApiResponse from '../utils/ApiResponse';
+import { sendSuccess } from '../utils/ApiResponse';
 import fs from 'fs';
 import OpenAI from 'openai';
 
@@ -72,12 +72,7 @@ export const scoreVoice = asyncHandler(async (req: Request, res: Response) => {
     const spokenText = transcription.text;
     const score = getSimilarityScore(spokenText, targetText);
 
-    res.json(
-      ApiResponse.success(
-        { score, spokenText, targetText },
-        'Évaluation vocale réussie'
-      )
-    );
+    sendSuccess(res, { score, spokenText, targetText }, 'Évaluation vocale réussie');
   } catch (error: any) {
     // Cleanup on error
     if (fs.existsSync(req.file.path)) {

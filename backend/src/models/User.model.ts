@@ -38,10 +38,9 @@ const UserSchema = new Schema<IUser>(
 );
 
 // Hash password avant sauvegarde
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash') || !this.passwordHash) return next();
+UserSchema.pre('save', async function () {
+  if (!this.isModified('passwordHash') || !this.passwordHash) return;
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
-  next();
 });
 
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
@@ -50,14 +49,13 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
 };
 
 // Calculer le niveau selon le XP
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function () {
   const xp = this.totalXp;
   if (xp < 100) this.level = 'novice';
   else if (xp < 500) this.level = 'apprenti';
   else if (xp < 1500) this.level = 'intermediaire';
   else if (xp < 4000) this.level = 'expert';
   else this.level = 'maitre';
-  next();
 });
 
 export default mongoose.model<IUser>('User', UserSchema);

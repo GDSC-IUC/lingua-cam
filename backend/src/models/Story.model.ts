@@ -43,9 +43,8 @@ const StorySchema = new Schema<IStory>(
   { timestamps: true }
 );
 
-StorySchema.pre('save', function (next) {
+StorySchema.pre('save', function () {
   this.totalPages = this.pages.length;
-  next();
 });
 
 export default mongoose.model<IStory>('Story', StorySchema);
