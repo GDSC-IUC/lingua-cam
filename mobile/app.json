@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "",
-    "slug": "nkolo",
+    "name": "Lingua-Cam",
+    "slug": "lingua-cam",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo-app.jpg",
@@ -23,8 +23,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#007A5E"
+        "foregroundImage": "./assets/logo-app.jpg",
+        "backgroundColor": "#006850"
       },
       "package": "app.nkolo.mobile",
       "permissions": [
@@ -32,7 +32,9 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "INTERNET",
-        "ACCESS_NETWORK_STATE"
+        "ACCESS_NETWORK_STATE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
       "versionCode": 1
     },
@@ -64,6 +66,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6332c0d1-1789-4cdf-85cf-ed41a11a618c"
+      }
     }
   }
 }
